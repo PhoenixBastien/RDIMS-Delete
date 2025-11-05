@@ -15,7 +15,7 @@ if (Test-Path $logFilePath) {
 # create credential file if it doesn't exist
 $credFilePath = ".\cred.xml"
 if (!(Test-Path $credFilePath)) {
-    Get-Credential | Export-Clixml $credFilePath
+    Get-Credential -Credential $Env:USERNAME | Export-Clixml $credFilePath
 }
 $cred = Import-Clixml $credFilePath
 
