@@ -1,5 +1,5 @@
 # Log file
 *.log
 
-# Credential file
-cred*.xml
+# XML file
+*.xml
