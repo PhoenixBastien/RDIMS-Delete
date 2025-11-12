@@ -70,7 +70,6 @@ for ($i = 0; $i -lt $toDelete.Count; $i += $chunkSize) {
         $sql.Execute("select parent, system_id from docsadm.folder_item where docnumber = $docNum") | Out-Null
 
         for ($j = 0; $j -lt $sql.GetRowCount(); $j++) {
-            # get parent document by document number and remove read-only
             $parentDocNum = $sql.GetColumnValue(1)
             $parentDoc = New-Object PCDDocObjectClass
             $parentDoc.SetDST($dst) +
