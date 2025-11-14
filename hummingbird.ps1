@@ -46,12 +46,6 @@ for ($i = 0; $i -lt $toDelete.Count; $i += $chunkSize) {
     Write-Host "Searching for documents $($i + 1) to $($i + $chunkSize)..."
     $chunk = $toDelete[$i..($i + $chunkSize - 1)]
     $docNums = $chunk -join ","
-
-    # search for chunk of document numbers
-    $search.AddSearchCriteria("DOCNUM", $docNums) | Out-Null
-    $search.Execute() | Out-Null
-    $count = $search.GetRowsFound()
-    Write-Host "$count documents found"
     
     # batch update READONLY for docs
     $sql.Execute("UPDATE docsadm.profile SET readonly = 'N' WHERE docnumber IN ($docNums)") | Out-Null
@@ -76,6 +70,12 @@ for ($i = 0; $i -lt $toDelete.Count; $i += $chunkSize) {
     # release results
     $sql.ReleaseResults() | Out-Null
 
+    # search for chunk of document numbers
+    $search.AddSearchCriteria("DOCNUM", $docNums) | Out-Null
+    $search.Execute() | Out-Null
+    $count = $search.GetRowsFound()
+    Write-Host "$count documents found"
+
     # begin get block
     $search.BeginGetBlock() | Out-Null
 
@@ -91,7 +91,7 @@ for ($i = 0; $i -lt $toDelete.Count; $i += $chunkSize) {
 
         # write to log if error occurs
         if ($doc.ErrNumber -ne 0) {
-            "Doc # $docNum, $($doc.ErrDescription)" | Out-File -FilePath $logFilePath -Append
+            "Doc # $docNum, $($doc.ErrDescription)".Trim() | Out-File -FilePath $logFilePath -Append
         }
     }
 
