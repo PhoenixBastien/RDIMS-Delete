@@ -50,8 +50,6 @@ for ($i = 0; $i -lt $toDelete.Count; $i += $chunkSize) {
     # search for chunk of document numbers
     $search.AddSearchCriteria("DOCNUM", $docNums) | Out-Null
     $search.Execute() | Out-Null
-
-    # get number of documents found
     $count = $search.GetRowsFound()
     Write-Host "$count documents found"
     
